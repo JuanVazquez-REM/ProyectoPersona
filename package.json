@@ -31,7 +31,6 @@
     "adonis-fold": "^3.0.3",
     "adonis-twilio": "^0.1.0",
     "adonis-url-signer": "^1.0.2",
-    "argon2": "^0.28.5",
     "mysql": "^2.18.1"
   },
   "autoload": {
