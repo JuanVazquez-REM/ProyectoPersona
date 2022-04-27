@@ -23,8 +23,7 @@ Route.post('/register','UserController.register')
 Route.get('/logout','AuthController.logout').middleware(['auth'])
 Route.get('/check','AuthController.check').middleware(['auth'])
 
-Route.post('/confirmacion','AuthController.confirmacion').middleware("signed");
-
+Route.post('/confirmacion','AuthController.confirmacion')
 Route.post('/rol','RolController.create')
 
 Route.post('/post','PostController.create')
