@@ -1,6 +1,7 @@
 'use strict'
 
 const Codigo = use('App/Models/Codigo')
+const User = use('App/Models/User')
 const {validate} = use('Validator')
 const Hash = use('Hash')
 const crypto = use('crypto')
@@ -20,13 +21,20 @@ class CodigoController {
             })
         } else {
             const {user_id} = request.only(['user_id'])
+            const user = User.find(user_id)
             try {
                 var codigo = crypto.randomBytes(3).toString('hex');
+
+                const obj = new Object()
+                obj.codigo = codigo
+
+                await this.sendMail(user.email,obj)
                 
                 const code = await Codigo.create({
                     'user_id':user_id,
                     'codigo':await Hash.make(codigo)
                 })
+                
                 
                 return response.status(201).json({
                     status:true,
@@ -77,6 +85,22 @@ class CodigoController {
                 
 
         }
+    }
+
+    async sendMail(email,data){
+        const correo = await Mail.send('emails.mailaccess', data, (message) => {
+            message
+                .to(email)
+                .from('rosamedina1008@gmail.com')
+                .subject('Correo de acceso')
+        })
+        console.log(correo)
+    }
+
+    delay(n){
+        return new Promise(function(resolve){
+            setTimeout(resolve,n*1000);
+        });
     }
 
     
