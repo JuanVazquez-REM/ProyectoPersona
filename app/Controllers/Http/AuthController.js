@@ -89,7 +89,7 @@ class AuthController {
                             await this.sendMail(user.email,obj)
                                 
 
-                            const urltemp = UrlSigner.temporarySign('http://104.131.21.154/confirmacion', .1, {Hfrlmi:user.id});
+                            const urltemp = UrlSigner.temporarySign('http://127.0.0.1:3333/confirmacion', .1, {Hfrlmi:user.id});
                             return response.status(200).json({
                                 status: true,
                                 message: "Confirme su email",
@@ -115,7 +115,7 @@ class AuthController {
                             await this.sendMail(user.email,obj1)
 
                         
-                            const urltemp1 = UrlSigner.temporarySign('http://104.131.21.154/confirmacion', .1, {Hfrlmi:user.id});
+                            const urltemp1 = UrlSigner.temporarySign('http://127.0.0.1:3333/confirmacion', .1, {Hfrlmi:user.id});
                             return response.status(200).json({
                                 status: true,
                                 message: "Confirme su email",
