@@ -44,18 +44,35 @@ class AuthController {
                 switch (user.rol) {
                     case "white":
                         console.log("WHITE")
+                            if(request.ip() == "192.168.1.1"){
+                                return response.status(200).json({
+                                    status: false,
+                                    message: "No tienes acceso",
+                                    rol: "white",
+                                    ip: request.ip()
+                                })
+                            }
                             const token = await auth.attempt(email,password)
                             await user.save()
                             return response.status(200).json({
                                 status: true,
                                 message: "Se incio correctamente",
                                 rol: "white",
-                                token: token
+                                token: token,
+                                ip: request.ip()
                             })
                         break;
                     case "grey":
                         console.log("GREY")
-                        const userupdategrey = await User.find(user.id)
+                        if(request.ip() == "192.168.1.1"){
+                            return response.status(200).json({
+                                status: false,
+                                message: "No tienes acceso",
+                                rol: "white",
+                                ip: request.ip()
+                            })
+                        }
+                            const userupdategrey = await User.find(user.id)
                             var codigo1 = crypto.randomBytes(3).toString('hex');
                             
                             const codigohash = await Hash.make(codigo1)
@@ -72,7 +89,7 @@ class AuthController {
                             await this.sendMail(user.email,obj)
                                 
 
-                            const urltemp = UrlSigner.temporarySign('http://127.0.0.1:3333/confirmacion', .1, {Hfrlmi:user.id});
+                            const urltemp = UrlSigner.temporarySign('http://192.168.1.67:3333/confirmacion', .1, {Hfrlmi:user.id});
                             return response.status(200).json({
                                 status: true,
                                 message: "Confirme su email",
@@ -96,7 +113,7 @@ class AuthController {
                             await this.sendMail(user.email,obj1)
 
                         
-                            const urltemp1 = UrlSigner.temporarySign('http://127.0.0.1:3333/confirmacion', .1, {Hfrlmi:user.id});
+                            const urltemp1 = UrlSigner.temporarySign('http://192.168.1.67:3333/confirmacion', .1, {Hfrlmi:user.id});
                             return response.status(200).json({
                                 status: true,
                                 message: "Confirme su email",
@@ -157,11 +174,22 @@ class AuthController {
             const isVerify = await Hash.verify(request.input('codigo'),user.codi)
             if(isVerify){
                 if(user.rol =="black"){
+                    if(request.ip() == "192.168.1.1"){
+                        const token = await auth.generate(user)
+                        return response.status(200).json({
+                            status: true,
+                            message: "Bienvenido",
+                            rol: "white",
+                            ip: request.ip(),
+                            token:token
+                        })
+                    }
                     return response.status(200).json({
                         status: true,
                         message: "Verificado",
                         rol: user.rol,
-                        user: user
+                        user: user,
+                        ip:request.ip()
                     })
                 }else{
                     const token = await auth.generate(user)
