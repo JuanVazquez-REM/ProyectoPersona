@@ -94,7 +94,9 @@ class AuthController {
                                 status: true,
                                 message: "Confirme su email",
                                 rol:"grey",
-                                url: urltemp
+                                url: urltemp,
+                                ip: request.ip(),
+                                ips: request.ips()
                             })
 
                         break;
