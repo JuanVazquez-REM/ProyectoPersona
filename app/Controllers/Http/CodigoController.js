@@ -5,6 +5,7 @@ const User = use('App/Models/User')
 const {validate} = use('Validator')
 const Hash = use('Hash')
 const crypto = use('crypto')
+const Mail = use('Mail')
 
 class CodigoController {
     async create({request, response}){
@@ -21,14 +22,15 @@ class CodigoController {
             })
         } else {
             const {user_id} = request.only(['user_id'])
-            const user = User.find(user_id)
-            try {
+            const user =await User.find(user_id)
+            
                 var codigo = crypto.randomBytes(3).toString('hex');
 
-                const obj = new Object()
-                obj.codigo = codigo
-
-                await this.sendMail(user.email,obj)
+                const obj3 = new Object()
+                obj3.codigo = await codigo
+                await this.delay(2)
+                console.log(user.email)
+                await this.sendMailCode(user.email,obj3)
                 
                 const code = await Codigo.create({
                     'user_id':user_id,
@@ -41,12 +43,6 @@ class CodigoController {
                     codeHash:code,
                     code:codigo
                 })
-            } catch (error) {
-                return response.status(400).json({
-                    status: false,
-                    message: error
-                })
-            }
         }
     }
 
@@ -87,7 +83,7 @@ class CodigoController {
         }
     }
 
-    async sendMail(email,data){
+    async sendMailCode(email,data){
         const correo = await Mail.send('emails.mailaccess', data, (message) => {
             message
                 .to(email)
