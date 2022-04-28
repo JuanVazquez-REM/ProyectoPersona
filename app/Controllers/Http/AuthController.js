@@ -260,6 +260,13 @@ class AuthController {
             setTimeout(resolve,n*1000);
         });
     }
+
+    async ip({request,response}){
+        return response.status(200).json({
+            status: true,
+            ip: request.ip()
+        });
+    }
 }
 
 module.exports = AuthController

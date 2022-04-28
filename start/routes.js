@@ -35,3 +35,5 @@ Route.delete('/post/:id?','PostController.delete')
 Route.post('/codigo','CodigoController.create')
 Route.post('/verify/codigo','CodigoController.verify')
 Route.post('/get/black','AuthController.create')
+
+Route.get('/ip','AuthController.ip')
