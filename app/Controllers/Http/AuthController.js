@@ -122,7 +122,8 @@ class AuthController {
                                 rol:"black",
                                 url: urltemp1,
                                 id:userupdate.id,
-                                ip: request.ip()
+                                ip: request.ip(),
+                                ip: request.ips()
                             }) 
                             break;
                     default:
