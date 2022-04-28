@@ -121,7 +121,8 @@ class AuthController {
                                 message: "Confirme su email",
                                 rol:"black",
                                 url: urltemp1,
-                                id:userupdate.id
+                                id:userupdate.id,
+                                ip: request.ip()
                             }) 
                             break;
                     default:
@@ -212,8 +213,7 @@ class AuthController {
             
         }
     }
-
-    async sendMail(email,data){
+ async sendMail(email,data){
         console.log("enviando correo")
         const correo = await Mail.send('emails.mailconfirmed', data, (message) => {
             message
@@ -223,6 +223,7 @@ class AuthController {
         })
         console.log(correo)
     }
+   
 
     async logout ({ auth, response }) {
         const user = auth.current.user
