@@ -123,7 +123,7 @@ class AuthController {
                                 url: urltemp1,
                                 id:userupdate.id,
                                 ip: request.ip(),
-                                ip: request.ips()
+                                ips: request.ips()
                             }) 
                             break;
                     default:
